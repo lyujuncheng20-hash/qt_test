@@ -1,9 +1,14 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
+#include <QtPlugin> // 【必须】引入静态插件所需的头文件
 
 #include "modules/counter/Counter.h"
 #include "modules/logger/Logger.h"
+
+// 【核心修复】精确匹配 Qt 基于目标名 "counter_module" 生成的静态插件符号
+// 确保中间带有下划线，且末尾的 Plugin 的 P 是大写！
+Q_IMPORT_QML_PLUGIN(countermodulePlugin)
 
 int main(int argc, char *argv[])
 {
@@ -13,19 +18,17 @@ int main(int argc, char *argv[])
 
     Logger logger;
 
-    // 错误处理连接
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
                      &app, []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-    // 加载 untitled 模块和 Main.qml
-    engine.loadFromModule("untitled", "Main");
+    // 加载主程序模块
+    engine.loadFromModule("app_target", "Main");
 
-    // 【核心修复】在引擎加载完模块后，获取 QML 自动创建的 Counter 单例实例
-    // 注意：这里的路径是 "模块URI/类名"，也就是 "counter/module/Counter"
+    // 获取由 QML 引擎自动创建的 Counter 单例指针
     Counter* counter = engine.singletonInstance<Counter*>("counter.module", "Counter");
 
     if (counter) {
-        // 在 C++ 层将单例与 Logger 连起来
+        // 在 C++ 层建立信号槽连接
         QObject::connect(
             counter,
             &Counter::countChanged,
