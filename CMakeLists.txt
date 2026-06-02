@@ -38,6 +38,10 @@ target_link_libraries(app_target
     Qt6::Quick
     logger_module
 
-    # 【核心修正】只链接 C++ 层目标 counter_module，绝对不要写 counter_moduleplugin！
+    # 【核心修正】同时链接 C++ 目标和其关联的插件目标
     countermodule
+    countermoduleplugin
 )
+
+# 6. 【核心修正】让 Qt 自动处理可执行文件的静态 QML 插件导入
+qt_import_qml_plugins(app_target)

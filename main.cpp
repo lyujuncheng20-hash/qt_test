@@ -1,14 +1,9 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-#include <QtPlugin> // 【必须】引入静态插件所需的头文件
 
-#include "modules/counter/Counter.h"
-#include "modules/logger/Logger.h"
-
-// 【核心修复】精确匹配 Qt 基于目标名 "counter_module" 生成的静态插件符号
-// 确保中间带有下划线，且末尾的 Plugin 的 P 是大写！
-Q_IMPORT_QML_PLUGIN(countermodulePlugin)
+#include "Counter.h"
+#include "Logger.h"
 
 int main(int argc, char *argv[])
 {
