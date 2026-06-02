@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
+# 定义 QML 模块
 qt_add_qml_module(counter_module
     URI counter.module
     VERSION 1.0
@@ -8,7 +9,7 @@ qt_add_qml_module(counter_module
         Counter.h
 )
 
-# 【修复】让包含路径变成项目根目录
+# 确保头文件包含路径正确
 target_include_directories(counter_module PUBLIC ${CMAKE_SOURCE_DIR})
 
 target_link_libraries(counter_module PRIVATE
