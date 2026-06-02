@@ -1,7 +1,7 @@
 import QtQuick
 import QtQuick.Controls
-import counter.module 1.0
 import base.components 1.0
+import counter.module 1.0
 
 ApplicationWindow {
     visible: true
