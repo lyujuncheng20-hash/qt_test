@@ -1,20 +1,30 @@
 import QtQuick
 import QtQuick.Controls
-import counter.module 1.0 // 导入你定义的模块
+import counter.module 1.0
+import base.components 1.0
 
 ApplicationWindow {
     visible: true
     width: 300
     height: 200
-    title: "Counter"
+    title: "Counter Example"
+
+    Counter {
+        id: myCounter
+        count: 0 // 可以赋初值
+
+        onCountChanged: (value) => {
+            cppLogger.onCountChanged(value)
+        }
+    }
 
     Column {
         anchors.centerIn: parent
         spacing: 10
 
         Text {
-            // 【修改】使用大写的类名 Counter 访问单例属性
-            text: Counter.count
+            // 【核心变化】通过 id 访问其实例属性
+            text: myCounter.count
             font.pixelSize: 30
             horizontalAlignment: Text.AlignHCenter
         }
@@ -22,23 +32,20 @@ ApplicationWindow {
         Row {
             spacing: 10
 
-            Button {
+            BaseButton{
                 text: "+"
-                // 【修改】调用单例方法
-                onClicked: Counter.increment()
+                onClicked: myCounter.increment()
             }
 
-            Button {
+            BaseButton {
                 text: "-"
-                // 【修改】调用单例方法
-                onClicked: Counter.decrement()
+                onClicked: myCounter.decrement()
             }
         }
 
-        Button {
+        BaseButton {
             text: "Reset"
-            // 【修改】调用单例方法
-            onClicked: Counter.reset()
+            onClicked: myCounter.reset()
         }
     }
 }

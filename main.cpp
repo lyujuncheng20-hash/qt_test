@@ -1,37 +1,25 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-
-#include "Counter.h"
-#include "Logger.h"
+#include <QQuickStyle>
+#include "Logger.h" // 只需要引入 Logger
 
 int main(int argc, char *argv[])
 {
+    QQuickStyle::setStyle("Basic");
+
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
 
+    // 注册 Logger 供 QML 使用，或者将它注册为全局上下文属性
     Logger logger;
+    engine.rootContext()->setContextProperty("cppLogger", &logger);
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
                      &app, []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-    // 加载主程序模块
     engine.loadFromModule("app_target", "Main");
-
-    // 获取由 QML 引擎自动创建的 Counter 单例指针
-    Counter* counter = engine.singletonInstance<Counter*>("counter.module", "Counter");
-
-    if (counter) {
-        // 在 C++ 层建立信号槽连接
-        QObject::connect(
-            counter,
-            &Counter::countChanged,
-            &logger,
-            &Logger::onCountChanged);
-    } else {
-        qWarning() << "Failed to find Counter singleton instance!";
-    }
 
     return app.exec();
 }

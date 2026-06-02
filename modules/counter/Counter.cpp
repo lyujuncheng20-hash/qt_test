@@ -10,20 +10,25 @@ int Counter::count() const
     return m_count;
 }
 
+void Counter::setCount(int value)
+{
+    if (m_count != value) {
+        m_count = value;
+        emit countChanged(m_count);
+    }
+}
+
 void Counter::increment()
 {
-    ++m_count;
-    emit countChanged(m_count);
+    setCount(m_count + 1);
 }
 
 void Counter::decrement()
 {
-    --m_count;
-    emit countChanged(m_count);
+    setCount(m_count - 1);
 }
 
 void Counter::reset()
 {
-    m_count = 0;
-    emit countChanged(m_count);
+    setCount(0);
 }
