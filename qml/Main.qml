@@ -1,6 +1,6 @@
 import QtQuick
 import QtQuick.Controls
-import counter.module 1.0
+import counter.module 1.0 // 导入你定义的模块
 
 ApplicationWindow {
     visible: true
@@ -8,13 +8,13 @@ ApplicationWindow {
     height: 200
     title: "Counter"
 
-
     Column {
         anchors.centerIn: parent
         spacing: 10
 
         Text {
-            text: counter_instance.count //この部分はProperty Bindingです。counter.count が変更されると 自動的に画面が更新されます。
+            // 【修改】使用大写的类名 Counter 访问单例属性
+            text: Counter.count
             font.pixelSize: 30
             horizontalAlignment: Text.AlignHCenter
         }
@@ -24,18 +24,21 @@ ApplicationWindow {
 
             Button {
                 text: "+"
-                onClicked: counter_instance.increment()
+                // 【修改】调用单例方法
+                onClicked: Counter.increment()
             }
 
             Button {
                 text: "-"
-                onClicked: counter_instance.decrement()
+                // 【修改】调用单例方法
+                onClicked: Counter.decrement()
             }
         }
 
         Button {
             text: "Reset"
-            onClicked: counter_instance.reset()
+            // 【修改】调用单例方法
+            onClicked: Counter.reset()
         }
     }
 }

@@ -7,22 +7,22 @@ class Counter : public QObject
 {
     Q_OBJECT
     QML_ELEMENT
-    Q_PROPERTY(int count READ count NOTIFY countChanged) //countプロパティをQMLへ公開しています。
+    QML_SINGLETON // 【新增】让这个类在导入模块时作为单例使用
+    Q_PROPERTY(int count READ count NOTIFY countChanged)
 
 public:
     explicit Counter(QObject *parent = nullptr);
 
     int count() const;
 
-    Q_INVOKABLE void increment(); //QMLから直接呼び出せる関数です。
+    Q_INVOKABLE void increment();
     Q_INVOKABLE void decrement();
-    //Q_INVOKABLE void reset();
 
 public slots:
     void reset();
 
 signals:
-    void countChanged(int value); //値が変更されたことを通知しています。
+    void countChanged(int value);
 
 private:
     int m_count = 0;

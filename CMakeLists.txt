@@ -9,12 +9,7 @@ set(CMAKE_AUTOMOC ON)
 # 1. 查找 Qt6 组件
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick)
 
-# 【核心修复】告诉 QML 工具链去哪里寻找你的本地模块
-# 这样 QML 预编译器在解析 Main.qml 中的 "import counter.module 1.0" 时才不会报错
-list(APPEND QMAKE_PROGRAM_ARGS "-importPath" "${CMAKE_CURRENT_BINARY_DIR}/modules/counter")
-set(QML_IMPORT_PATH "${CMAKE_CURRENT_SOURCE_DIR}/modules" CACHE STRING "QML Import Paths" FORCE)
-
-# 2. 引入子文件夹
+# 2. 引入子文件夹（必须在主程序 target 之前，确保 counter_module 目标已被定义）
 add_subdirectory(modules/counter)
 add_subdirectory(modules/logger)
 
@@ -29,8 +24,8 @@ qt_add_qml_module(untitled
     VERSION 1.0
     QML_FILES
         qml/Main.qml
-    # 注意：如果上面设置了 QML_IMPORT_PATH，有时可以先去掉 DEPENDS
-    # 让其通过下方的 target_link_libraries 强行进行 C++ 链式装载
+    DEPENDS
+        counter.module # 【核心修复】这里使用模块的正式 URI "counter.module" 代替 "counter_module"
 )
 
 # 5. 链接库
@@ -40,6 +35,6 @@ target_link_libraries(untitled
     Qt6::Gui
     Qt6::Qml
     Qt6::Quick
-    counter_module   # 确保 C++ 目标被正确引入
+    counter_module   # C++ 链接仍然使用目标名
     logger_module
 )
