@@ -1,12 +1,13 @@
 // main.qml
 import QtQuick
 import QtQuick.Controls
+import app_ui
 
 ApplicationWindow {
     id: mainWindow
     visible: true
-    width: 300
-    height: 200
+    width: 600
+    height: 400
     title: "Main Window"
 
     // 用 StackView 来管理所有的页面跳转
@@ -24,7 +25,6 @@ ApplicationWindow {
 
         Item {
             id: homeLayout
-            anchors.fill: parent
 
             // 这里放你的主页内容，比如你提到的“图标”
             // 假设用一个简单的 Image + MouseArea 或者 ToolButton 来做图标
