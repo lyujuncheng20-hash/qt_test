@@ -39,6 +39,11 @@ qt_add_qml_module(app_target
     VERSION 1.0
     DEPENDENCIES
         app_ui
+        # 🟢 如果你的 C++ 计数器模块 URI 叫 counter_module，请改成正确的 URI
+        # 或者是直接使用 TARGET 来依赖更稳妥：
+    DEPENDENCIES TARGET
+        counter.module
+        logger.module
 )
 
 # 5. 链接库
