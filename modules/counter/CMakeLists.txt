@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.16)
 
 # 使用 OUTPUT_TARGETS 捕获 Qt 自动生成的插件目标
 qt_add_qml_module(countermodule
-    STATIC
+    SHARED
     URI counter.module
     VERSION 1.0
     SOURCES
