@@ -13,7 +13,7 @@ public:
     explicit Counter(QObject *parent = nullptr);
 
     int count() const;
-    void setCount(int value); // 新增设置函数
+    void setCount(int value);
 
     Q_INVOKABLE void increment();
     Q_INVOKABLE void decrement();

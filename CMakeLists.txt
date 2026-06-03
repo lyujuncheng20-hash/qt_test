@@ -42,7 +42,6 @@ target_link_libraries(app_target
     Qt6::QuickControls2
     logger_module
 
-    # 【核心修正】同时链接 C++ 目标和其关联的插件目标
     countermodule
     countermoduleplugin
 
