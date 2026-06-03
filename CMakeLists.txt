@@ -21,12 +21,10 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick QuickControls2)
 # 规范化项目的全局 QML 输出路径
 qt_standard_project_setup(REQUIRES 6.5)
 
-# ... 前面查找组件和重定向 bin 的代码保持不变 ...
-
 # 2. 引入子文件夹
-add_subdirectory(qml)         # 引入你的统一 qml 目录
+add_subdirectory(qml)
 add_subdirectory(modules/counter)
-add_subdirectory(modules/logger)
+add_subdirectory(modules/logger) # 🟢 确保引入了此目录
 
 # 3. 定义主程序可执行文件
 add_executable(app_target src/main.cpp)
@@ -39,11 +37,8 @@ qt_add_qml_module(app_target
     VERSION 1.0
     DEPENDENCIES
         app_ui
-        # 🟢 如果你的 C++ 计数器模块 URI 叫 counter_module，请改成正确的 URI
-        # 或者是直接使用 TARGET 来依赖更稳妥：
-    DEPENDENCIES TARGET
-        counter.module
-        logger.module
+        counter.module  # 🟢 修正：直接写 URI，去掉 TARGET 关键字
+        logger.module   # 🟢 修正：直接写 URI，去掉 TARGET 关键字
 )
 
 # 5. 链接库
@@ -52,6 +47,5 @@ target_link_libraries(app_target
     Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick Qt6::QuickControls2
     loggermodule
     countermodule
-
-    ui_module               # 🔴 确保链接了 ui_module
+    ui_module
 )
