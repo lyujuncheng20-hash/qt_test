@@ -12,7 +12,7 @@ Item {
         count: 0
 
         onCountChanged: (value) => {
-            cppLogger.onCountChanged(value)
+            Logger.onCountChanged(value)
         }
     }
 

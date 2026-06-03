@@ -31,8 +31,6 @@ qt_add_qml_module(app_target
     VERSION 1.0
     DEPENDENCIES
         app_ui
-        counter.module
-        logger.module
 )
 
 target_link_libraries(app_target

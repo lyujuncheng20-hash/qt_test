@@ -1,7 +1,6 @@
 // src/main.cpp
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
 #include <QQuickStyle>
 #include <QDebug>
 #include "Logger.h"
@@ -22,7 +21,7 @@ int main(int argc, char *argv[])
 
     // LoggerをQMLからグローバルに呼び出せるようプロパティとして登録
     Logger logger;
-    engine.rootContext()->setContextProperty("cppLogger", &logger);
+    engine.rootContext()->setContextProperty("Logger", &logger);
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
                      &app, []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
