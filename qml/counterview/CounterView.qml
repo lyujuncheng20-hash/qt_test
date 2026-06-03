@@ -23,7 +23,7 @@ Item {
             left: parent.left
         }
         onClicked: {
-            // mainStack 是在 main.qml 中定义的 StackView 的 id
+            // 前の画面に戻る
             mainStack.pop()
         }
     }

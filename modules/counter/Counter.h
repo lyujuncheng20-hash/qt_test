@@ -4,18 +4,13 @@
 #include <QObject>
 #include <QtQml>
 
-// ==============================================================================
-// 符号导出/导入控制（针对 Windows / MinGW 动态库环境）
-// ==============================================================================
+// Windows環境用のシンボルエクスポート/インポート制御
 #if defined(countermodule_EXPORTS)
 #  define COUNTER_EXPORT Q_DECL_EXPORT
 #else
 #  define COUNTER_EXPORT Q_DECL_IMPORT
 #endif
 
-/**
- * @brief 计数器核心核心类，处理数据的核心自增、自减与复位
- */
 class COUNTER_EXPORT Counter : public QObject
 {
     Q_OBJECT

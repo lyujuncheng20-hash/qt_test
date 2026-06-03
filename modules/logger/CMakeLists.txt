@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 3.16)
 
-# 定义日志模块并配置为 SHARED 动态库形态
 qt_add_qml_module(loggermodule
     SHARED
     URI logger.module
@@ -11,7 +10,7 @@ qt_add_qml_module(loggermodule
     OUTPUT_TARGETS logger_targets
 )
 
-# 将当前源码目录设为 PUBLIC，允许主程序直接 #include "Logger.h"
+# メインプログラムから #include "Logger.h" を可能にする設定
 target_include_directories(loggermodule PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(loggermodule PRIVATE
