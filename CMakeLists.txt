@@ -7,14 +7,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_AUTOMOC ON)
 
 # ==============================================================================
-# 将整个项目的编译输出统一重定向到 bin 目录
+# 将可执行程序的编译输出重定向到 bin 目录
 # ==============================================================================
 set(UA_OUTPUT_DIR ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${UA_OUTPUT_DIR})
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${UA_OUTPUT_DIR})
-set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${UA_OUTPUT_DIR})
 
-set(QML_IMPORT_PATH ${UA_OUTPUT_DIR} CACHE STRING "QML Import Paths" FORCE)
+# 🔴 关键修复：告诉 Qt，所有 QML 模块的插件和文件夹，也统一生成到 bin 目录下
+set(QT_QML_OUTPUT_DIRECTORY ${UA_OUTPUT_DIR} CACHE PATH "QML output directory" FORCE)
 
 # 1. 查找 Qt6 组件
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick QuickControls2)
