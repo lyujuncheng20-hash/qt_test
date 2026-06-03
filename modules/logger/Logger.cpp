@@ -7,5 +7,5 @@ Logger::Logger(QObject *parent)
 
 void Logger::onCountChanged(int value)
 {
-    qDebug() << "Count changed:" << value;
+    qDebug() << "Logger [C++ Backend] -> Count changed to:" << value;
 }
