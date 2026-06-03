@@ -6,11 +6,10 @@
 class Logger : public QObject
 {
     Q_OBJECT
+public:
+    explicit Logger(QObject *parent = nullptr);
 
 public slots:
-    void onCountChanged(int value)
-    {
-        qDebug() << "Count changed:" << value;
-    }
+    void onCountChanged(int value);
 };
 #endif // LOGGER_H

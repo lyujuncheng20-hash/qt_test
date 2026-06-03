@@ -1,12 +1,20 @@
-# 定义一个接口库（Header-only 库）
-add_library(logger_module INTERFACE)
+cmake_minimum_required(VERSION 3.16)
 
-# 核心修改：明确声明该模块包含的文件
-# target_sources 加上 INTERFACE 参数，可以把头文件挂载到该目标上
-# 这样 IDE（如 Qt Creator）的项目树里就能正常显示 Logger.h 了
-target_sources(logger_module INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/Logger.h
+# 使用 OUTPUT_TARGETS 捕获 Qt 自动生成的插件目标
+qt_add_qml_module(loggermodule
+    SHARED
+    URI logger.module
+    VERSION 1.0
+    SOURCES
+        Logger.cpp
+        Logger.h
+    OUTPUT_TARGETS logger_targets
 )
 
-# 配置头文件包含路径，让主程序能直接 #include "Logger.h"
-target_include_directories(logger_module INTERFACE ${CMAKE_CURRENT_SOURCE_DIR})
+# 这样主程序链接此模块后，就能直接 #include "Logger.h"
+target_include_directories(loggermodule PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+
+target_link_libraries(loggermodule PRIVATE
+    Qt6::Core
+    Qt6::Qml
+)
