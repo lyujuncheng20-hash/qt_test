@@ -1,51 +1,48 @@
+// main.qml
 import QtQuick
 import QtQuick.Controls
-import base.components 1.0
-import counter.module 1.0
 
 ApplicationWindow {
+    id: mainWindow
     visible: true
     width: 300
     height: 200
-    title: "Counter Example"
+    title: "Main Window"
 
-    Counter {
-        id: myCounter
-        count: 0 // 可以赋初值
+    // 用 StackView 来管理所有的页面跳转
+    StackView {
+        id: mainStack
+        anchors.fill: parent
 
-        onCountChanged: (value) => {
-            cppLogger.onCountChanged(value)
-        }
+        // 初始页面设置为下面定义的主页组件
+        initialItem: homePage
     }
 
-    Column {
-        anchors.centerIn: parent
-        spacing: 10
+    // 将主页的内容打包成一个组件（Component）
+    Component {
+        id: homePage
 
-        Text {
-            // 【核心变化】通过 id 访问其实例属性
-            text: myCounter.count
-            font.pixelSize: 30
-            horizontalAlignment: Text.AlignHCenter
-        }
+        Item {
+            id: homeLayout
+            anchors.fill: parent
 
-        Row {
-            spacing: 10
+            // 这里放你的主页内容，比如你提到的“图标”
+            // 假设用一个简单的 Image + MouseArea 或者 ToolButton 来做图标
+            ToolButton {
+                id: iconButton
+                anchors.centerIn: parent
 
-            BaseButton{
-                text: "+"
-                onClicked: myCounter.increment()
+                // 按钮的外观：可以同时包含图标和文字
+                icon.name: "view-refresh" // 如果有系统图标库
+                text: "📊\n点击进入计数器"
+                font.pixelSize: 14
+
+                // 点击图标后，执行跳转
+                onClicked: {
+                    // push() 会自动加载 CounterView.qml 并将其作为当前页面显示
+                    mainStack.push("counterview/CounterView.qml")
+                }
             }
-
-            BaseButton {
-                text: "-"
-                onClicked: myCounter.decrement()
-            }
-        }
-
-        BaseButton {
-            text: "Reset"
-            onClicked: myCounter.reset()
         }
     }
 }

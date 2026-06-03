@@ -4,28 +4,26 @@
 #include <QQuickStyle>
 #include <QDebug>
 #include "Logger.h"
-#include "Counter.h" // 保持计数器头文件
+#include "Counter.h"
 
 int main(int argc, char *argv[])
 {
-    QQuickStyle::setStyle("Basic"); //
-
-    QGuiApplication app(argc, argv); //
-
-    QQmlApplicationEngine engine; //
+    QQuickStyle::setStyle("Basic");
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
 
     // 强行激活 countermodule.dll 的符号绑定
     qDebug() << "Linking QML Module C++ Backend..." << Counter::staticMetaObject.className();
 
     // 注册 C++ Logger 供 QML 使用
-    Logger logger; //
-    engine.rootContext()->setContextProperty("cppLogger", &logger); //
+    Logger logger;
+    engine.rootContext()->setContextProperty("cppLogger", &logger);
 
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
-                     &app, []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection); //
+                     &app, []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-    // 加载主模块
-    engine.loadFromModule("app_target", "Main"); //
+    // 🔴 完美的标准加载方式
+    engine.loadFromModule("app_ui", "Main");
 
-    return app.exec(); //
+    return app.exec();
 }

@@ -22,39 +22,33 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Qml Quick QuickControls2)
 # 规范化项目的全局 QML 输出路径
 qt_standard_project_setup(REQUIRES 6.5)
 
+# ... 前面查找组件和重定向 bin 的代码保持不变 ...
+
 # 2. 引入子文件夹
-add_subdirectory(qml/base)
+add_subdirectory(qml)         # 引入你的统一 qml 目录
 add_subdirectory(modules/counter)
 add_subdirectory(modules/logger)
 
 # 3. 定义主程序可执行文件
-add_executable(app_target
-    src/main.cpp
-)
-
-# 让主程序能顺利找到 counter 模块的头文件
+add_executable(app_target src/main.cpp)
 target_include_directories(app_target PRIVATE modules/counter)
 
 # 4. 配置主程序的 QML 模块
 qt_add_qml_module(app_target
     URI app_target
     VERSION 1.0
-    QML_FILES
-        qml/Main.qml
+    # 🔴 关键核心：告诉主程序，你依赖 app_ui 模块。
+    # 这样 CMake 会在编译时自动把 app_ui 的 Qmldir 和插件注册信息注入到主程序的运行环境中！
+    DEPENDENCIES
+        app_ui
 )
 
 # 5. 链接库
 target_link_libraries(app_target
     PRIVATE
-    Qt6::Core
-    Qt6::Gui
-    Qt6::Qml
-    Qt6::Quick
-    Qt6::QuickControls2
+    Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick Qt6::QuickControls2
     logger_module
+    countermodule
 
-    countermodule          # 动态库 (SHARED)，会自动输出到 bin/
-
-    basemodule             # 静态库 (STATIC)，直接打包进 exe
-    base_components_plugin # 👈 强制链接静态插件目标，阻止被编译器剔除
+    ui_module               # 🔴 确保链接了 ui_module
 )
