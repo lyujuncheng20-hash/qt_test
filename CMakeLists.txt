@@ -25,29 +25,27 @@ qt_standard_project_setup(REQUIRES 6.5)
 
 # 2. 引入子文件夹
 add_subdirectory(qml)         # 引入你的统一 qml 目录
-add_subdirectory(modules/counter)
-add_subdirectory(modules/logger)
+add_subdirectory(modules)
 
 # 3. 定义主程序可执行文件
 add_executable(app_target src/main.cpp)
 target_include_directories(app_target PRIVATE modules/counter)
 
-# 4. 配置主程序的 QML 模块
+# 根目录 CMakeLists.txt 的最后链接部分
+
+# 4. 配置主程序的 QML 模块，声明你依赖了哪些子模块
 qt_add_qml_module(app_target
     URI app_target
     VERSION 1.0
-    # 🔴 关键核心：告诉主程序，你依赖 app_ui 模块。
-    # 这样 CMake 会在编译时自动把 app_ui 的 Qmldir 和插件注册信息注入到主程序的运行环境中！
     DEPENDENCIES
         app_ui
+        counter.module
 )
 
 # 5. 链接库
 target_link_libraries(app_target
     PRIVATE
-    Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick Qt6::QuickControls2
-    logger_module
-    countermodule
-
-    ui_module               # 🔴 确保链接了 ui_module
+        Qt6::Core Qt6::Gui Qt6::Qml Qt6::Quick Qt6::QuickControls2
+        ui_module
+        cpp_logic           # 🟢 链接 cpp_logic 动态库
 )
