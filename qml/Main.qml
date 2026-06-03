@@ -23,23 +23,30 @@ ApplicationWindow {
     Component {
         id: homePage
 
+        // 🟢 修复核心：作为页面的根 Item，去掉所有的 anchors 属性！
+        // StackView 会自动接管这个 Item 的大小和位置
         Item {
             id: homeLayout
 
-            // 这里放你的主页内容，比如你提到的“图标”
-            // 假设用一个简单的 Image + MouseArea 或者 ToolButton 来做图标
             ToolButton {
                 id: iconButton
+                // ✅ 子控件可以安全地使用 anchors.centerIn: parent 居中在 Item 里
                 anchors.centerIn: parent
 
-                // 按钮的外观：可以同时包含图标和文字
-                icon.name: "view-refresh" // 如果有系统图标库
-                text: "📊\n点击进入计数器"
+                // 1. 图标路径
+                icon.source: "assets/images/info.png"
+                icon.width: 32
+                icon.height: 32
+
+                // 2. 按钮文字与字体
+                text: "点击进入计数器"
                 font.pixelSize: 14
 
-                // 点击图标后，执行跳转
+                // 3. 布局（让文字显示在图标下方）
+                display: AbstractButton.TextUnderIcon
+
+                // 4. 点击事件
                 onClicked: {
-                    // push() 会自动加载 CounterView.qml 并将其作为当前页面显示
                     mainStack.push("counterview/CounterView.qml")
                 }
             }

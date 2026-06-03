@@ -9,4 +9,7 @@ qt_add_qml_module(ui_module
         Main.qml
         counterview/CounterView.qml
         base/BaseButton.qml
+
+    RESOURCES
+        assets/images/info.png
 )
