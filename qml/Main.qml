@@ -1,7 +1,6 @@
 // main.qml
 import QtQuick
 import QtQuick.Controls
-import app_ui
 
 ApplicationWindow {
     id: mainWindow

@@ -16,7 +16,7 @@ class LOGGER_EXPORT Logger : public QObject
 {
     Q_OBJECT
     QML_ELEMENT // QMLコンポーネントとして登録
-
+    QML_SINGLETON
 public:
     explicit Logger(QObject *parent = nullptr);
 

@@ -19,10 +19,6 @@ int main(int argc, char *argv[])
     qDebug() << "Linking Counter Module..." << Counter::staticMetaObject.className();
     qDebug() << "Linking Logger Module..." << Logger::staticMetaObject.className();
 
-    // LoggerをQMLからグローバルに呼び出せるようプロパティとして登録
-    Logger logger;
-    engine.rootContext()->setContextProperty("Logger", &logger);
-
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed,
                      &app, []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 

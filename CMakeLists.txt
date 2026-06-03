@@ -22,16 +22,12 @@ add_subdirectory(modules/logger)
 
 add_executable(app_target src/main.cpp)
 
+set_target_properties(app_target PROPERTIES
+    QT_QML_IMPORT_PATH "${UA_OUTPUT_DIR}"
+)
+
 target_include_directories(app_target PRIVATE modules/counter)
 target_include_directories(app_target PRIVATE modules/logger)
-
-# 各C++およびUIモジュールの依存関係を定義
-qt_add_qml_module(app_target
-    URI app_target
-    VERSION 1.0
-    DEPENDENCIES
-        app_ui
-)
 
 target_link_libraries(app_target
     PRIVATE

@@ -1,8 +1,8 @@
 // CounterView.qml
 import QtQuick
-import QtQuick.Controls
 import "../base"
-import counter.module 1.0
+import CounterModule 1.0
+import LoggerModule 1.0
 
 Item {
     id: counterPage
