@@ -1,4 +1,4 @@
-// main.qml
+// qml/Main.qml
 import QtQuick
 import QtQuick.Controls
 
@@ -14,6 +14,26 @@ ApplicationWindow {
         id: mainStack
         anchors.fill: parent
         initialItem: homePage
+
+        // 1. 进入新页面时的动画 (Push)
+        pushEnter: Transition {
+            PropertyAnimation { property: "x"; from: mainStack.width; to: 0; duration: 400; easing.type: Easing.OutCubic }
+            PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 400 }
+        }
+        pushExit: Transition {
+            PropertyAnimation { property: "x"; from: 0; to: -mainStack.width; duration: 400; easing.type: Easing.OutCubic }
+            PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 400 }
+        }
+
+        // 2. 返回上一页时的动画 (Pop)
+        popEnter: Transition {
+            PropertyAnimation { property: "x"; from: -mainStack.width; to: 0; duration: 400; easing.type: Easing.OutCubic }
+            PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 400 }
+        }
+        popExit: Transition {
+            PropertyAnimation { property: "x"; from: 0; to: mainStack.width; duration: 400; easing.type: Easing.OutCubic }
+            PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 400 }
+        }
     }
 
     Component {
