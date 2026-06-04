@@ -15,24 +15,31 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: homePage
 
-        // 1. 进入新页面时的动画 (Push)
+        //画面遷移（縦型・横型移動とフェードイン・アウト）の制御
         pushEnter: Transition {
+            // 新しい画面を右端（mainStack.width）から左（0）へ滑り込ませる（OutCubicで滑らかに減速）
             PropertyAnimation { property: "x"; from: mainStack.width; to: 0; duration: 400; easing.type: Easing.OutCubic }
+            // 同時に、不透明度を0から1へ変化（フェードイン）
             PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 400 }
-        }
-        pushExit: Transition {
-            PropertyAnimation { property: "x"; from: 0; to: -mainStack.width; duration: 400; easing.type: Easing.OutCubic }
-            PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 400 }
         }
 
-        // 2. 返回上一页时的动画 (Pop)
+        pushExit: Transition {
+            // 古い画面を左側へ少し押し出す
+            PropertyAnimation { property: "x"; to: -mainStack.width * 0.3; duration: 400; easing.type: Easing.OutCubic }
+            // 同時に、不透明度を下げていく（フェードアウト）
+            PropertyAnimation { property: "opacity"; to: 0; duration: 400 }
+        }
+
         popEnter: Transition {
-            PropertyAnimation { property: "x"; from: -mainStack.width; to: 0; duration: 400; easing.type: Easing.OutCubic }
+            // 戻る際：前の画面を左の奥から定位置（0）へ戻す
+            PropertyAnimation { property: "x"; from: -mainStack.width * 0.3; to: 0; duration: 400; easing.type: Easing.OutCubic }
             PropertyAnimation { property: "opacity"; from: 0; to: 1; duration: 400 }
         }
+
         popExit: Transition {
-            PropertyAnimation { property: "x"; from: 0; to: mainStack.width; duration: 400; easing.type: Easing.OutCubic }
-            PropertyAnimation { property: "opacity"; from: 1; to: 0; duration: 400 }
+            // 戻る際：現在の画面を右端へ滑り出させて消す
+            PropertyAnimation { property: "x"; to: mainStack.width; duration: 400; easing.type: Easing.OutCubic }
+            PropertyAnimation { property: "opacity"; to: 0; duration: 400 }
         }
     }
 
