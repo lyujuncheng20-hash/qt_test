@@ -7,6 +7,8 @@ qt_add_qml_module(countermodule
     SOURCES
         Counter.cpp
         Counter.h
+        private/CounterWorkerPrivate.cpp
+        private/CounterWorkerPrivate.h
     OUTPUT_TARGETS counter_targets
 )
 

@@ -1,5 +1,6 @@
 // CounterView.qml
 import QtQuick
+import QtQuick.Controls
 import "../base"
 import CounterModule 1.0
 import LoggerModule 1.0
@@ -30,12 +31,29 @@ Item {
 
     Column {
         anchors.centerIn: parent
-        spacing: 10
+        spacing: 15
+
+        CheckBox {
+            id: heavyModeCheckBox
+            text: "高負荷計算を有効にする"
+            anchors.horizontalCenter: parent.horizontalCenter
+
+            checked: myCounter.isHeavy
+            onCheckedChanged: {
+                myCounter.isHeavy = checked
+            }
+        }
 
         Item {
             width: 100
             height: 50
             anchors.horizontalCenter: parent.horizontalCenter
+
+            BusyIndicator {
+                anchors.centerIn: parent
+                running: myCounter.isCalculating
+                visible: myCounter.isCalculating
+            }
 
             Text {
                 id: countText
@@ -45,7 +63,9 @@ Item {
                 anchors.centerIn: parent
                 transformOrigin: Item.Center
 
-                // 順番に実行（Sequential）と同時に実行（Parallel）を組み合わせたアニメーション
+                opacity: myCounter.isCalculating ? 0.2 : 1.0
+                Behavior on opacity { NumberAnimation { duration: 150 } }
+				// 順番に実行（Sequential）と同時に実行（Parallel）を組み合わせたアニメーション
                 SequentialAnimation {
                     id: numberAnimation
 
@@ -68,17 +88,20 @@ Item {
 
             BaseButton{
                 text: "+"
+                enabled: !myCounter.isCalculating
                 onClicked: myCounter.increment()
             }
 
             BaseButton {
                 text: "-"
+                enabled: !myCounter.isCalculating
                 onClicked: myCounter.decrement()
             }
         }
 
         BaseButton {
             text: "Reset"
+            enabled: !myCounter.isCalculating
             onClicked: myCounter.reset()
         }
     }
